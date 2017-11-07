@@ -1,22 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using ForgingAhead.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-
-using ForgingAhead.Models;
+using System.Linq;
 
 namespace ForgingAhead.Controllers
-{   
+{
     public class QuestController : Controller
     {
-        //Add Context Property Here
         private readonly ApplicationDbContext _context;
 
         public QuestController(ApplicationDbContext context)
         {
-            //Inject ApplicationDbContext here
             _context = context;
         }
 
@@ -29,41 +23,56 @@ namespace ForgingAhead.Controllers
         [HttpPost]
         public IActionResult Create(Quest quest)
         {
-            //Save Quest to Database Here
+            if (_context.Quests.Any(e => e.Name == quest.Name))
+            {
+                // Check for existing quest here
+                ModelState.AddModelError("Name", "Name is already in use.");
+            }
+            if (!ModelState.IsValid)
+                return View(quest);
             _context.Quests.Add(quest);
             _context.SaveChanges();
+
             return RedirectToAction("Index");
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
-            //Set Title Here
             ViewData["Title"] = "Quests";
-            //Get All Quests Here
             var model = _context.Quests.ToList();
             return View(model);
         }
 
+        [HttpGet]
+        [Route("Quest/{name}/Details")]
         public IActionResult Details(string name)
         {
-            //Get matching Quest here
             var model = _context.Quests.FirstOrDefault(e => e.Name == name);
             return View(model);
         }
 
+        [HttpGet]
+        [Route("Quest/{name}/Edit")]
+        public IActionResult Edit(string name)
+        {
+            var model = _context.Quests.FirstOrDefault(e => e.Name == name);
+            return View(model);
+        }
+
+        [HttpPost]
         public IActionResult Update(Quest quest)
         {
-            // add quest update logic here
             _context.Entry(quest).State = EntityState.Modified;
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
 
+        [HttpPost]
         public IActionResult Delete(string name)
         {
-            // delete record from database here
-            var original = _context.Quests.FirstOrDefault(e => e.Name == name);
-            _context.Quests.Remove(original);
+            var quest = _context.Quests.FirstOrDefault(e => e.Name == name);
+            _context.Quests.Remove(quest);
             _context.SaveChanges();
             return RedirectToAction("Index");
         }

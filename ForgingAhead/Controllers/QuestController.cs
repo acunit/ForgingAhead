@@ -37,6 +37,8 @@ namespace ForgingAhead.Controllers
 
         public IActionResult Index()
         {
+            //Set Title Here
+            ViewData["Title"] = "Quests";
             //Get All Quests Here
             var model = _context.Quests.ToList();
             return View(model);

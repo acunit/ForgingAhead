@@ -15,5 +15,6 @@
   <ItemGroup>
     <Folder Include="Views\Character\" />
     <Folder Include="Views\Quest\" />
+    <Folder Include="Views\Shared\EditorTemplates\" />
   </ItemGroup>
 </Project>

@@ -33,3 +33,31 @@
         display: none;
     }
 }
+
+/* Set widths on the form inputs since otherwise they're 100% wide */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+.bordered-div {
+    border-radius: 5px;
+    border-style: solid;
+    border-width: 1px;
+    background-color: #FFDDBB;
+}
+
+.form-control-static {
+    padding-bottom: 0;
+    padding-top: 0;
+}
+
+.table {
+    background-color: #EEEEEE;
+}
+
+.table-header {
+    padding-bottom: 0;
+    padding-top: 0;
+}
